@@ -31,6 +31,7 @@
                 <ul class="nav navbar-nav">
                     {% if current_user.is_authenticated %}
                         <li><a href="{{ url_for('main.all_restaurants') }}">Vote</a></li>
+                        <li><a href="{{ url_for('main.add_restaurant') }}">Add Resto</a></li>
 
                         <li><a href="{{ url_for('main.user', username=current_user.username) }}">Profile</a></li>
                     {% endif %}
