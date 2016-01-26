@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component name="dataSourceStorage">
+  <data-source name="data-dev" uuid="42a6b1b0-1609-41b3-a5ca-9bbd73da6c4a">
+    <database-info product="SQLite" version="3.8.9" jdbc-version="2.1" driver-name="SQLiteJDBC" driver-version="native"/>
+    <case-sensitivity plain-identifiers="mixed" quoted-identifiers="mixed"/>
+    <schema name="" catalog=""/>
+    <table name="alembic_version" schema="" catalog="" type="TABLE">
+      <column name="version_num" sqlType="VARCHAR(32)" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
+    </table>
+    <table name="comments" schema="" catalog="" type="TABLE">
+      <column name="id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
+      <column name="body" sqlType="TEXT" precision="2000000000" scale="10" nullable="true" jdbcType="12"/>
+      <column name="body_html" sqlType="TEXT" precision="2000000000" scale="10" nullable="true" jdbcType="12"/>
+      <column name="timestamp" sqlType="DATETIME" precision="2000000000" scale="10" nullable="true" jdbcType="12"/>
+      <column name="disabled" sqlType="BOOLEAN" precision="2000000000" scale="10" nullable="true" jdbcType="4"/>
+      <column name="author_id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="true" jdbcType="4"/>
+      <column name="post_id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="true" jdbcType="4"/>
+      <primary-key columns="id),foreign key(author_id"/>
+      <foreign-key name="#FAKE_comments_1" columns="post_id" ref-table="posts" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
+      <foreign-key name="#FAKE_comments_2" columns="author_id" ref-table="users" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
+      <index name="ix_comments_timestamp" unique="true" columns="timestamp"/>
+    </table>
+    <table name="follows" schema="" catalog="" type="TABLE">
+      <column name="follower_id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
+      <column name="followed_id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
+      <column name="timestamp" sqlType="DATETIME" precision="2000000000" scale="10" nullable="true" jdbcType="12"/>
+      <primary-key columns="follower_id,followed_id"/>
+      <foreign-key name="#FAKE_follows_1" columns="follower_id" ref-table="users" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
+      <foreign-key name="#FAKE_follows_2" columns="followed_id" ref-table="users" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
+    </table>
+    <table name="menus" schema="" catalog="" type="TABLE">
+      <column name="id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
+      <column name="restaurant_id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="true" jdbcType="4"/>
+      <column name="date" sqlType="DATE" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
+      <column name="content" sqlType="VARCHAR(300)" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
+      <primary-key columns="id),foreign key(restaurant_id"/>
+      <foreign-key name="#FAKE_menus_1" columns="restaurant_id" ref-table="restaurant" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
+    </table>
+    <table name="posts" schema="" catalog="" type="TABLE">
+      <column name="id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
+      <column name="body" sqlType="TEXT" precision="2000000000" scale="10" nullable="true" jdbcType="12"/>
+      <column name="timestamp" sqlType="DATETIME" precision="2000000000" scale="10" nullable="true" jdbcType="12"/>
+      <column name="author_id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="true" jdbcType="4"/>
+      <column name="body_html" sqlType="TEXT" precision="2000000000" scale="10" nullable="true" jdbcType="12"/>
+      <primary-key columns="id),foreign key(author_id"/>
+      <foreign-key name="#FAKE_posts_1" columns="author_id" ref-table="users" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
+      <exported-key name="#FAKE_comments_1" table="comments" schema="" catalog="" columns="post_id"/>
+      <index name="ix_posts_timestamp" unique="true" columns="timestamp"/>
+    </table>
+    <table name="restaurant" schema="" catalog="" type="TABLE">
+      <column name="id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
+      <column name="name" sqlType="VARCHAR(64)" precision="2000000000" scale="10" nullable="true" jdbcType="12"/>
+      <column name="coordinates" sqlType="VARCHAR(300)" precision="2000000000" scale="10" nullable="true" jdbcType="12"/>
+      <column name="phone" sqlType="VARCHAR(64)" precision="2000000000" scale="10" nullable="true" jdbcType="12"/>
+      <primary-key columns="id"/>
+      <exported-key name="#FAKE_menus_1" table="menus" schema="" catalog="" columns="restaurant_id"/>
+      <exported-key name="#FAKE_votes_2" table="votes" schema="" catalog="" columns="restaurant_id"/>
+      <index name="ix_restaurant_phone" unique="true" columns="phone"/>
+      <index name="ix_restaurant_name" unique="true" columns="name"/>
+    </table>
+    <table name="roles" schema="" catalog="" type="TABLE">
+      <column name="id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
+      <column name="name" sqlType="VARCHAR(64)" precision="2000000000" scale="10" nullable="true" jdbcType="12"/>
+      <column name="default" sqlType="BOOLEAN" precision="2000000000" scale="10" nullable="true" jdbcType="4"/>
+      <column name="permissions" sqlType="INTEGER" precision="2000000000" scale="10" nullable="true" jdbcType="4"/>
+      <primary-key columns="id),unique (name"/>
+      <exported-key name="#FAKE_users_1" table="users" schema="" catalog="" columns="role_id"/>
+      <index name="ix_roles_default" unique="true" columns="default"/>
+    </table>
+    <table name="users" schema="" catalog="" type="TABLE">
+      <column name="id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
+      <column name="username" sqlType="VARCHAR(64)" precision="2000000000" scale="10" nullable="true" jdbcType="12"/>
+      <column name="role_id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="true" jdbcType="4"/>
+      <column name="email" sqlType="VARCHAR(64)" precision="2000000000" scale="10" nullable="true" jdbcType="12"/>
+      <column name="password_hash" sqlType="VARCHAR(128)" precision="2000000000" scale="10" nullable="true" jdbcType="12"/>
+      <column name="confirmed" sqlType="BOOLEAN" precision="2000000000" scale="10" nullable="true" jdbcType="4"/>
+      <column name="about_me" sqlType="TEXT" precision="2000000000" scale="10" nullable="true" jdbcType="12"/>
+      <column name="last_seen" sqlType="DATETIME" precision="2000000000" scale="10" nullable="true" jdbcType="12"/>
+      <column name="location" sqlType="VARCHAR(64)" precision="2000000000" scale="10" nullable="true" jdbcType="12"/>
+      <column name="member_since" sqlType="DATETIME" precision="2000000000" scale="10" nullable="true" jdbcType="12"/>
+      <column name="name" sqlType="VARCHAR(64)" precision="2000000000" scale="10" nullable="true" jdbcType="12"/>
+      <column name="avatar_hash" sqlType="VARCHAR(32)" precision="2000000000" scale="10" nullable="true" jdbcType="12"/>
+      <primary-key columns="id),foreign key(role_id"/>
+      <foreign-key name="#FAKE_users_1" columns="role_id" ref-table="roles" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
+      <exported-key name="#FAKE_comments_2" table="comments" schema="" catalog="" columns="author_id"/>
+      <exported-key name="#FAKE_follows_1" table="follows" schema="" catalog="" columns="follower_id"/>
+      <exported-key name="#FAKE_follows_2" table="follows" schema="" catalog="" columns="followed_id"/>
+      <exported-key name="#FAKE_posts_1" table="posts" schema="" catalog="" columns="author_id"/>
+      <exported-key name="#FAKE_votes_1" table="votes" schema="" catalog="" columns="user_id"/>
+      <index name="ix_users_email" unique="true" columns="email"/>
+      <index name="ix_users_username" unique="true" columns="username"/>
+    </table>
+    <table name="votes" schema="" catalog="" type="TABLE">
+      <column name="id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
+      <column name="date" sqlType="DATE" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
+      <column name="user_id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="true" jdbcType="4"/>
+      <column name="restaurant_id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="true" jdbcType="4"/>
+      <primary-key columns="id),foreign key(restaurant_id"/>
+      <foreign-key name="#FAKE_votes_1" columns="user_id" ref-table="users" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
+      <foreign-key name="#FAKE_votes_2" columns="restaurant_id" ref-table="restaurant" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
+    </table>
+  </data-source>
+</component>
