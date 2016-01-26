@@ -6,11 +6,11 @@
 
 
 {% block page_content %}
-    {% if  current_user.is_administrator() %}
-        <a href="{{ url_for('.add_restaurant') }}">
-            <span class="glyphicon glyphicon-plus"></span>Add a restaurant
-        </a>
-    {%  endif %}
+
+    <a href="{{ url_for('.add_restaurant') }}">
+        <span class="glyphicon glyphicon-plus"></span>Add a restaurant
+    </a>
+
     {% include '_restaurants.html' %}
 
 
