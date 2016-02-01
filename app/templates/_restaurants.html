@@ -6,90 +6,91 @@
 
 <div class="table-responsive">
     <table class="table table-striped table-hover ">
+        {% if restaurants is not none %}
+            {% for restaurant in restaurants %}
+                <tr>
+                    <td>
+                        {% if (restaurant.id != voted_restaurant_id) %}
+                            <a
+                                    href="{{ url_for('.vote_restaurant', restaurant_id=restaurant.id) }}"><img
+                                    src="../static/arrow-vote.png"></a>
+                        {% endif %}
 
-        {% for restaurant in restaurants %}
-            <tr>
-                <td>
-                    {% if (restaurant.id != voted_restaurant_id) %}
-                        <a
-                                href="{{ url_for('.vote_restaurant', restaurant_id=restaurant.id) }}"><img
-                                src="../static/arrow-vote.png"></a>
-                    {% endif %}
-
-                </td>
-                <td>
-
-                    <a>{{ restaurant.name }}</a>
-                    {% for vote in restaurant.current_votes() %}
-                        <span class="label label-hunger">{{ vote.user.username }}</span>
-
-                    {% endfor %}
-                    <div class="accordion" id="accordion{{ restaurant.id }}">
-                        <div class="accordion-group">
-                            <div class="accordion-heading">
-                                <a class="accordion-toggle" data-toggle="collapse"
-                                   data-parent="#accordion{{ restaurant.id }}"
-                                   href="#collapse{{ restaurant.id }}">
-                                    <h3><span class="glyphicon glyphicon-info-sign"></span></h3>
-                                </a>
-                            </div>
-                            <div id="collapse{{ restaurant.id }}" class="accordion-body collapse">
-
-
-                                <div class="accordion-inner">
-                                    {% if restaurant.menu_url is not none %}
-                                        <a target="_blank" href="{{ restaurant.full_url() }}">
-                                            <span class="glyphicon glyphicon-list"></span>
-                                        </a>
-                                    {% endif %}
-                                    <a href="http://www.google.com/maps/place/ {{ restaurant.coordinates }}">
-                                        <span class="glyphicon glyphicon-globe"></span>
-                                    </a>
-                                    {{ restaurant.phone }}
-                                    {% if (restaurant.id == voted_restaurant_id) %}
-                                        <form method="POST" action="/restaurants">
-                                            {{ form.hidden_tag() }}
-                                            {{ form.comment.label }} {{ form.comment(size=20) }}
-                                            <input type="submit" value="order">
-                                        </form>
-                                    {% endif %}
-                                    <ul>
-                                        {% for current_vote in restaurant.current_votes() %}
-                                            <li>
-                                                {{ current_vote.user.username }} :
-                                                <strong>{{ current_vote.comment }}</strong>
-                                            </li>
-                                        {% endfor %}
-                                    </ul>
-
-
-                                </div>
-                            </div>
-                        </div>
-
-
-                </td>
-
-
-
-
-                {% if current_user.is_administrator() %}
+                    </td>
                     <td>
 
-                        <a href="{{ url_for('.edit_restaurant', id=restaurant.id) }}">
-                            <span class="glyphicon glyphicon-pencil"></span>
-                        </a>
+                        <a>{{ restaurant.name }}</a>
+                        {% for vote in restaurant.current_votes() %}
+                            <span class="label label-hunger">{{ vote.user.username }}</span>
 
-                        <a href="{{ url_for('.delete_restaurant', id=restaurant.id) }}">
-                            <span class="glyphicon glyphicon-trash"></span>
-                        </a>
+                        {% endfor %}
+                        <div class="accordion" id="accordion{{ restaurant.id }}">
+                            <div class="accordion-group">
+                                <div class="accordion-heading">
+                                    <a class="accordion-toggle" data-toggle="collapse"
+                                       data-parent="#accordion{{ restaurant.id }}"
+                                       href="#collapse{{ restaurant.id }}">
+                                        <h3><span class="glyphicon glyphicon-info-sign"></span></h3>
+                                    </a>
+                                </div>
+                                <div id="collapse{{ restaurant.id }}" class="accordion-body collapse">
+
+
+                                    <div class="accordion-inner">
+                                        {% if restaurant.menu_url is not none %}
+                                            <a target="_blank" href="{{ restaurant.full_url() }}">
+                                                <span class="glyphicon glyphicon-list"></span>
+                                            </a>
+                                        {% endif %}
+                                        <a href="http://www.google.com/maps/place/ {{ restaurant.coordinates }}">
+                                            <span class="glyphicon glyphicon-globe"></span>
+                                        </a>
+                                        {{ restaurant.phone }}
+                                        {% if (restaurant.id == voted_restaurant_id) %}
+                                            <form method="POST" action="/restaurants">
+                                                {{ form.hidden_tag() }}
+                                                {{ form.comment.label }} {{ form.comment(size=20) }}
+                                                <input type="submit" value="order">
+                                            </form>
+                                        {% endif %}
+                                        <ul>
+                                            {% for current_vote in restaurant.current_votes() %}
+                                                <li>
+                                                    {{ current_vote.user.username }} :
+                                                    <strong>{{ current_vote.comment }}</strong>
+                                                </li>
+                                            {% endfor %}
+                                        </ul>
+
+
+                                    </div>
+                                </div>
+                            </div>
+
+
                     </td>
-                {% endif %}
 
 
-            </tr>
 
-        {% endfor %}
+
+                    {% if current_user.is_administrator() %}
+                        <td>
+
+                            <a href="{{ url_for('.edit_restaurant', id=restaurant.id) }}">
+                                <span class="glyphicon glyphicon-pencil"></span>
+                            </a>
+
+                            <a href="{{ url_for('.delete_restaurant', id=restaurant.id) }}">
+                                <span class="glyphicon glyphicon-trash"></span>
+                            </a>
+                        </td>
+                    {% endif %}
+
+
+                </tr>
+
+            {% endfor %}
+        {% endif %}
     </table>
 </div>
 

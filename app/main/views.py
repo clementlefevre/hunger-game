@@ -7,6 +7,7 @@ from flask.ext.sqlalchemy import get_debug_queries
 from sqlalchemy.exc import IntegrityError
 
 from . import main
+from app.main.helper import view_helper
 from .forms import EditProfileForm, EditProfileAdminForm, AddRestaurantForm, DeleteRestaurantForm, Add_vote_comment
 from .. import db
 from ..models import Role, User, Restaurant, Vote
@@ -103,16 +104,7 @@ def all_restaurants():
     vote = Vote.query.filter_by(user=user).filter_by(date=datetime.date.today()).first()
     all_votes_today = Vote.query.filter_by(date=datetime.date.today()).all()
 
-    sorted_restaurants = []
-
-    for resto in restaurants:
-        resto_vote = 0
-
-        for today_vote in all_votes_today:
-            if today_vote.restaurant_id == resto.id:
-                resto_vote += 1
-        sorted_restaurants.append((resto, resto_vote))
-    sorted_restaurants.sort(key=lambda x: x[1], reverse=True)
+    sorted_restaurants = view_helper.current_ranking(all_votes_today, restaurants)
 
     if vote == None:
         voted_restaurant_id = -1
@@ -124,7 +116,9 @@ def all_restaurants():
         db.session.add(vote)
         db.session.commit()
 
-    return render_template('restaurants.html', restaurants=zip(*sorted_restaurants)[0], user=user,
+    restaurants = [i[0] for i in sorted_restaurants]
+
+    return render_template('restaurants.html', restaurants=restaurants, user=user,
                            voted_restaurant_id=voted_restaurant_id, date=date, vote=vote, form=form)
 
 
