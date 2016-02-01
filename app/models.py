@@ -228,6 +228,7 @@ class Restaurant(db.Model):
     phone = db.Column(db.String(64))
     coordinates = db.Column(db.String(100))
     menu_url = db.Column(db.String(300))
+    logo_path = db.Column(db.String(200))
 
     menus = db.relationship('Menu', backref='restaurant', lazy='dynamic')
     votes = db.relationship('Vote', backref='restaurant', lazy='dynamic')
