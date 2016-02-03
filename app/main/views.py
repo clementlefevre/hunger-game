@@ -4,6 +4,7 @@ from flask import render_template, redirect, url_for, abort, flash, request, \
     current_app
 from flask.ext.login import login_required, current_user
 from flask.ext.sqlalchemy import get_debug_queries
+
 from sqlalchemy.exc import IntegrityError
 
 from . import main
@@ -116,9 +117,7 @@ def all_restaurants():
         db.session.add(vote)
         db.session.commit()
 
-    restaurants = [i[0] for i in sorted_restaurants]
-
-    return render_template('restaurants.html', restaurants=restaurants, user=user,
+    return render_template('restaurants.html', restaurants=sorted_restaurants, user=user,
                            voted_restaurant_id=voted_restaurant_id, date=date, vote=vote, form=form)
 
 
