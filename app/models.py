@@ -224,11 +224,11 @@ def load_user(user_id):
 class Restaurant(db.Model):
     __tablename__ = 'restaurant'
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(64), unique=True, index=True)
-    phone = db.Column(db.String(64))
-    coordinates = db.Column(db.String(100))
-    menu_url = db.Column(db.String(300))
-    logo_path = db.Column(db.String(200))
+    name = db.Column(db.String(), unique=True, index=True)
+    phone = db.Column(db.String())
+    coordinates = db.Column(db.String())
+    menu_url = db.Column(db.String())
+    logo_path = db.Column(db.String())
 
     menus = db.relationship('Menu', backref='restaurant', lazy='dynamic')
     votes = db.relationship('Vote', backref='restaurant', lazy='dynamic')
